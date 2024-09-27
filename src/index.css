@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .image__item {
+        @apply absolute text-3xl cursor-pointer invisible group-hover:visible text-white transition-all duration-300
+    }
+
+    .hover__opacity {
+        @apply hover:opacity-90 transition-all duration-200
+    }
+}
