@@ -3,10 +3,11 @@ import { useGlobalContext } from "../../hooks/useGlobalContext";
 //  MASONRY
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 //  COMPONENTS
-import Image from "../../components/Image";
+import { Image } from "../../components";
 
 function LikedImages() {
-  const { dispatch, images, likedImages } = useGlobalContext();
+  const { images, likedImages } = useGlobalContext();
+
   return (
     images.length > 0 && (
       <ResponsiveMasonry

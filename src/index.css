@@ -3,11 +3,27 @@
 @tailwind utilities;
 
 @layer components {
-    .image__item {
-        @apply absolute text-3xl cursor-pointer invisible group-hover:visible text-white transition-all duration-300
-    }
+  .__align-elements {
+    @apply container mx-auto px-5
+  }
 
-    .hover__opacity {
-        @apply hover:opacity-90 transition-all duration-200
-    }
+  .__image-item {
+    @apply invisible absolute cursor-pointer text-3xl text-white transition-all duration-300 group-hover:visible
+  }
+
+  .__hover-opacity {
+    @apply transition-all duration-200 hover:opacity-90
+  }
+
+  html, body, #root {
+    @apply h-full
+  }
+
+  #root {
+    @apply flex flex-col
+  }
+
+  main {
+    @apply __align-elements grow py-5
+  }
 }

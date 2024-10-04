@@ -6,16 +6,27 @@ import { useGlobalContext } from "../../hooks/useGlobalContext";
 //  MASONRY
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 //  COMPONENTS
-import Image from "../../components/Image";
+import { Image, SearchForm } from "../../components";
 //  UTILS
 import { joinClassNames } from "../../utils/classnames";
+//  RRD
+import { useActionData } from "react-router-dom";
+
+//  ACTION
+export const action = async ({ request }) => {
+  let formData = await request.formData();
+  let search = formData.get("search");
+  return search;
+};
 
 function Home() {
-  const { dispatch, pageNumber, images, selectedColor } = useGlobalContext();
+  const { dispatch, pageNumber, images, searchParams } = useGlobalContext();
+  const searchParamsFromAction = useActionData();
+
   const { data, isPending, error } = useFetch(
     `https://api.unsplash.com/search/photos?client_id=${
       import.meta.env.VITE_ACCESS_KEY
-    }&per_page=12&query=nature&page=${pageNumber}`
+    }&per_page=12&query=${searchParamsFromAction ?? "all"}&page=${pageNumber}`,
   );
 
   useEffect(() => {
@@ -24,11 +35,19 @@ function Home() {
 
       if (images.length > 0) {
         results = results.filter(
-          (item) => !images.some((img) => img.id === item.id)
+          (item) => !images.some((img) => img.id === item.id),
         );
       }
 
-      dispatch({ type: "ADD_IMAGES", payload: results });
+      if (searchParamsFromAction == searchParams) {
+        dispatch({ type: "ADD_IMAGES", payload: results });
+      } else {
+        dispatch({ type: "SEARCH_IMAGES", payload: results });
+        dispatch({
+          type: "SET_SEARCH_PARAMS",
+          payload: searchParamsFromAction,
+        });
+      }
     }
   }, [data]);
 
@@ -40,11 +59,14 @@ function Home() {
 
   return (
     <>
+      <div className="mb-10 mt-5">
+        <SearchForm />
+      </div>
       {images.length > 0 && (
         <ResponsiveMasonry
           columnsCountBreakPoints={{ 350: 1, 550: 2, 750: 3, 950: 4 }}
         >
-          <Masonry gutter="8px">
+          <Masonry gutter="5px">
             {images.map((image) => {
               return <Image key={image.id} image={image} />;
             })}
@@ -53,10 +75,8 @@ function Home() {
       )}
       <button
         onClick={handleReadMore}
-        className={joinClassNames(
-          "border py-2 w-full my-5 text-white font-semibold rounded-md hover__opacity justify-center flex items-center",
-          selectedColor
-        )}
+        className="btn btn-info btn-block mt-5"
+        disabled={isPending}
       >
         {isPending ? "Loading..." : "Load more"}
       </button>

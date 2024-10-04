@@ -1,9 +1,8 @@
 //  REACT ICONS
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
-
 //  CONTEXT
-import { useGlobalContext } from "../hooks/useGlobalContext";
+import { useGlobalContext } from "../../hooks/useGlobalContext";
 
 function Image({ image }) {
   const { dispatch, likedImages } = useGlobalContext();
@@ -21,7 +20,7 @@ function Image({ image }) {
   //   console.log(user);
 
   return (
-    <div className="relative group hover__opacity">
+    <div className="__hover-opacity group relative">
       <img
         src={urls.regular}
         alt={alt_description}
@@ -30,7 +29,7 @@ function Image({ image }) {
       />
       <span
         onClick={() => handleLike(id)}
-        className="top-3 right-3 image__item hover:text-red-500"
+        className="__image-item right-3 top-3 hover:text-red-500"
       >
         {liked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
       </span>
@@ -39,7 +38,7 @@ function Image({ image }) {
         rel="nofollow"
         target="_blank"
         title="Download this image"
-        className="bottom-3 right-3 image__item hover:text-orange-500"
+        className="__image-item bottom-3 right-3 hover:text-orange-500"
         href={links.download + "&amp;force=true"}
       >
         <MdOutlineDownloadForOffline />

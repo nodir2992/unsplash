@@ -5,7 +5,7 @@ function ErrorPage() {
   const error = useRouteError();
 
   return (
-    <div className="error-page container pt-5">
+    <div className="error-page __align-elements pt-5">
       <h2>Oops!</h2>
       <p>Sorry, an unexpected error has occurred.</p>
       <p>

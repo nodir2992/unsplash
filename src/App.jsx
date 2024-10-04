@@ -1,16 +1,20 @@
 //  RRD
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 //  LAYOUT
 import MainLayout from "./layout/MainLayout";
 //  PAGES
-import Home from "./pages/home/Home";
-import About from "./pages/about/About";
-import ErrorPage from "./pages/error/Error";
-import Contact from "./pages/contact/Contact";
-import LikedImages from "./pages/likedImages/LikedImages";
+import {
+  ErrorPage,
+  HomePage,
+  AboutPage,
+  ContactPage,
+  LikedImagesPage,
+} from "./pages";
+//  ACTIONS
+import { action as HomeAction } from "./pages/home/Home";
 
-function App() {
-  const router = createBrowserRouter([
+export default function App() {
+  const routes = createBrowserRouter([
     {
       path: "/",
       element: <MainLayout />,
@@ -18,25 +22,24 @@ function App() {
       children: [
         {
           index: true,
-          element: <Home />,
+          element: <HomePage />,
+          action: HomeAction,
         },
         {
-          path: "/about",
-          element: <About />,
+          path: "about",
+          element: <AboutPage />,
         },
         {
-          path: "/contact",
-          element: <Contact />,
+          path: "contact",
+          element: <ContactPage />,
         },
         {
-          path: "/liked-images",
-          element: <LikedImages />,
+          path: "liked-images",
+          element: <LikedImagesPage />,
         },
       ],
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return <RouterProvider router={routes} />;
 }
-
-export default App;
