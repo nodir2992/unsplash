@@ -8,7 +8,7 @@
   }
 
   .__image-item {
-    @apply invisible absolute cursor-pointer text-3xl text-white transition-all duration-300 group-hover:visible
+    @apply invisible absolute cursor-pointer text-3xl text-white transition-all duration-300 group-hover:visible hover:text-red-500
   }
 
   .__hover-opacity {

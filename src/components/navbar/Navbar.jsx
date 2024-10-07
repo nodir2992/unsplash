@@ -39,7 +39,7 @@ function Navbar() {
         <div className="navbar-end flex items-center gap-3">
           <ThemeSwitcher />
           <div className="indicator">
-            <span className="badge indicator-item badge-secondary badge-sm">
+            <span className="badge indicator-item badge-info badge-sm">
               {likedImages.length}
             </span>
             <Link to="/liked-images">

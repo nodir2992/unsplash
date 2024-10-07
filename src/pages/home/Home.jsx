@@ -7,8 +7,6 @@ import { useGlobalContext } from "../../hooks/useGlobalContext";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 //  COMPONENTS
 import { Image, SearchForm } from "../../components";
-//  UTILS
-import { joinClassNames } from "../../utils/classnames";
 //  RRD
 import { useActionData } from "react-router-dom";
 
@@ -64,7 +62,7 @@ function Home() {
       </div>
       {images.length > 0 && (
         <ResponsiveMasonry
-          columnsCountBreakPoints={{ 350: 1, 550: 2, 750: 3, 950: 4 }}
+          columnsCountBreakPoints={{ 400: 2, 900: 3, 1400: 4 }}
         >
           <Masonry gutter="5px">
             {images.map((image) => {
