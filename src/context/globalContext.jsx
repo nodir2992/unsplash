@@ -5,6 +5,7 @@ const initialState = {
   pageNumber: 1,
   images: [],
   likedImages: [],
+  downloadedImages: [],
   searchParams: "",
 };
 
@@ -23,6 +24,8 @@ const changeState = (state, action) => {
       return { ...state, images: payload };
     case "TOGGLE_LIKED_IMAGE":
       return { ...state, likedImages: payload };
+    case "TOGGLE_DOWNLOADED_IMAGE":
+      return { ...state, downloadedImages: payload };
     default:
       return state;
   }

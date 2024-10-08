@@ -1,15 +1,16 @@
 //  REACT ICONS
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
 //  CONTEXT
 import { useGlobalContext } from "../../hooks/useGlobalContext";
 //  RRD
 import { Link } from "react-router-dom";
 
-function Image({ image }) {
-  const { dispatch, likedImages } = useGlobalContext();
+function Image({ image, downloadBtn = true }) {
+  const { dispatch, likedImages, downloadedImages } = useGlobalContext();
   const { id, urls, alt_description, links, user } = image;
   const liked = likedImages.includes(id);
+  const downloded = downloadedImages.includes(id);
 
   const handleLike = (id) => {
     const images = liked
@@ -17,6 +18,15 @@ function Image({ image }) {
       : [...likedImages, id];
 
     dispatch({ type: "TOGGLE_LIKED_IMAGE", payload: images });
+  };
+
+  const handleDownload = (id) => {
+    const images = downloded ? downloadedImages : [...downloadedImages, id];
+    dispatch({ type: "TOGGLE_DOWNLOADED_IMAGE", payload: images });
+  };
+  const handleRemoveDownload = (id) => {
+    const images = downloadedImages.filter((item) => item != id);
+    dispatch({ type: "TOGGLE_DOWNLOADED_IMAGE", payload: images });
   };
 
   // console.log(user);
@@ -37,16 +47,26 @@ function Image({ image }) {
       >
         {liked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
       </span>
-      <a
-        download=""
-        rel="nofollow"
-        target="_blank"
-        title="Download this image"
-        className="__image-item bottom-3 right-3"
-        href={links.download + "&amp;force=true"}
-      >
-        <MdOutlineDownloadForOffline />
-      </a>
+      {downloadBtn ? (
+        <a
+          download=""
+          rel="nofollow"
+          target="_blank"
+          title="Download this image"
+          className="__image-item bottom-3 right-3"
+          href={links.download + "&amp;force=true"}
+          onClick={() => handleDownload(id)}
+        >
+          <MdOutlineDownloadForOffline />
+        </a>
+      ) : (
+        <span
+          className="__image-item bottom-3 right-3"
+          onClick={() => handleRemoveDownload(id)}
+        >
+          <FaTrash />
+        </span>
+      )}
       <a
         href={user.portfolio_url ?? user.links.html}
         target="_blank"

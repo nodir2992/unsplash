@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 //  CUSTOM HOOKS
 import { useFetch } from "../../hooks/useFetch";
 
-function InfoPhoto() {
+function ImageInfo() {
   const [photo, setPhoto] = useState(null);
   const { id } = useParams();
 
@@ -21,8 +21,8 @@ function InfoPhoto() {
 
   return (
     photo && (
-      <div className="card bg-base-100 shadow-xl lg:card-side">
-        <figure className="lg:w-2/3">
+      <div className="card bg-base-100 shadow-xl md:card-side lg:mx-auto lg:w-2/3">
+        <figure className="md:w-2/3">
           <img src={photo.urls.regular} alt={photo.alt_description} />
         </figure>
         <div className="card-body">
@@ -40,4 +40,4 @@ function InfoPhoto() {
   );
 }
 
-export default InfoPhoto;
+export default ImageInfo;

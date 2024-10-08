@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 //  REACT ICONS
 import { FcGallery } from "react-icons/fc";
-import { FaHeart } from "react-icons/fa";
+import { FaDownload, FaHeart } from "react-icons/fa";
 //  COMPONENTS
 import NavbarLinks from "./NavbarLinks";
 import ThemeSwitcher from "./ThemeSwitcher";
@@ -10,7 +10,7 @@ import ThemeSwitcher from "./ThemeSwitcher";
 import { useGlobalContext } from "../../hooks/useGlobalContext";
 
 function Navbar() {
-  const { likedImages } = useGlobalContext();
+  const { likedImages, downloadedImages } = useGlobalContext();
 
   return (
     <header className="bg-base-200">
@@ -38,6 +38,15 @@ function Navbar() {
         </div>
         <div className="navbar-end flex items-center gap-3">
           <ThemeSwitcher />
+
+          <div className="indicator">
+            <span className="badge indicator-item badge-info badge-sm">
+              {downloadedImages.length}
+            </span>
+            <Link to="/downloaded-images">
+              <FaDownload size={24} />
+            </Link>
+          </div>
           <div className="indicator">
             <span className="badge indicator-item badge-info badge-sm">
               {likedImages.length}

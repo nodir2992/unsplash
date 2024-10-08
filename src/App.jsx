@@ -9,7 +9,8 @@ import {
   AboutPage,
   ContactPage,
   LikedImagesPage,
-  InfoPhoto,
+  ImageInfo,
+  DownloadedImages,
 } from "./pages";
 //  ACTIONS
 import { action as HomeAction } from "./pages/home/Home";
@@ -39,8 +40,12 @@ export default function App() {
           element: <LikedImagesPage />,
         },
         {
+          path: "downloaded-images",
+          element: <DownloadedImages />,
+        },
+        {
           path: "/photo-info/:id",
-          element: <InfoPhoto />,
+          element: <ImageInfo />,
         },
       ],
     },
