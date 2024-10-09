@@ -5,3 +5,5 @@ export { default as ContactPage } from "./contact/Contact";
 export { default as LikedImagesPage } from "./images/LikedImages";
 export { default as ImageInfo } from "./images/ImageInfo";
 export { default as DownloadedImages } from "./images/DownloadedImages";
+export { default as LoginPage } from "./auth/Login";
+export { default as RegisterPage } from "./auth/Register";

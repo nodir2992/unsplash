@@ -32,8 +32,8 @@ function ThemeSwitcher() {
         onChange={changeTheme}
         checked={theme === THEME_LIGHT}
       />
-      <FaSun className="swap-off fill-current" size={22} />
-      <FaMoon className="swap-on fill-current" size={22} />
+      <FaSun className="swap-off fill-current" size={18} />
+      <FaMoon className="swap-on fill-current" size={18} />
     </label>
   );
 }

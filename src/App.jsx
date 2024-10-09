@@ -1,5 +1,11 @@
+//  REACT
+import { useEffect, useState } from "react";
 //  RRD
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 //  LAYOUT
 import MainLayout from "./layout/MainLayout";
 //  PAGES
@@ -11,11 +17,32 @@ import {
   LikedImagesPage,
   ImageInfo,
   DownloadedImages,
+  LoginPage,
+  RegisterPage,
 } from "./pages";
 //  ACTIONS
 import { action as HomeAction } from "./pages/home/Home";
+import { action as RegisterAction } from "./pages/auth/Register";
+import { action as LoginAction } from "./pages/auth/Login";
+//  COMPONENTS
+import { PrivateRoute } from "./components";
+//  FIREBASE
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/firebaseConfig";
+//  CUSTOM HOOKS
+import { useGlobalContext } from "./hooks/useGlobalContext";
 
 export default function App() {
+  const { dispatch, user } = useGlobalContext();
+  const [authReady, setAuthReady] = useState(false);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      dispatch({ type: "SET_USER", payload: user });
+      setAuthReady(true);
+    });
+  }, []);
+
   const routes = createBrowserRouter([
     {
       path: "/",
@@ -24,32 +51,42 @@ export default function App() {
       children: [
         {
           index: true,
-          element: <HomePage />,
+          element: <PrivateRoute Component={HomePage} />,
           action: HomeAction,
         },
         {
           path: "about",
-          element: <AboutPage />,
+          element: <PrivateRoute Component={AboutPage} />,
         },
         {
           path: "contact",
-          element: <ContactPage />,
+          element: <PrivateRoute Component={ContactPage} />,
         },
         {
           path: "liked-images",
-          element: <LikedImagesPage />,
+          element: <PrivateRoute Component={LikedImagesPage} />,
         },
         {
           path: "downloaded-images",
-          element: <DownloadedImages />,
+          element: <PrivateRoute Component={DownloadedImages} />,
         },
         {
           path: "/photo-info/:id",
-          element: <ImageInfo />,
+          element: <PrivateRoute Component={ImageInfo} />,
         },
       ],
     },
+    {
+      path: "/login",
+      element: user ? <Navigate to="/" /> : <LoginPage />,
+      action: LoginAction,
+    },
+    {
+      path: "/register",
+      element: user ? <Navigate to="/" /> : <RegisterPage />,
+      action: RegisterAction,
+    },
   ]);
 
-  return <RouterProvider router={routes} />;
+  return <>{authReady && <RouterProvider router={routes} />}</>;
 }

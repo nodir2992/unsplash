@@ -7,6 +7,7 @@ const initialState = {
   likedImages: [],
   downloadedImages: [],
   searchParams: "",
+  user: null,
 };
 
 export const GlobalContext = createContext(undefined);
@@ -26,6 +27,8 @@ const changeState = (state, action) => {
       return { ...state, likedImages: payload };
     case "TOGGLE_DOWNLOADED_IMAGE":
       return { ...state, downloadedImages: payload };
+    case "SET_USER":
+      return { ...state, user: payload };
     default:
       return state;
   }

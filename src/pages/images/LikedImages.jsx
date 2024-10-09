@@ -8,19 +8,19 @@ import { Image } from "../../components";
 function LikedImages() {
   const { images, likedImages } = useGlobalContext();
 
-  return (
-    images.length > 0 && (
-      <ResponsiveMasonry
-        columnsCountBreakPoints={{ 350: 1, 550: 2, 750: 3, 950: 4 }}
-      >
-        <Masonry gutter="8px">
-          {images.map((image) => {
-            if (likedImages.includes(image.id))
-              return <Image key={image.id} image={image} />;
-          })}
-        </Masonry>
-      </ResponsiveMasonry>
-    )
+  return likedImages.length > 0 ? (
+    <ResponsiveMasonry
+      columnsCountBreakPoints={{ 350: 1, 550: 2, 750: 3, 950: 4 }}
+    >
+      <Masonry gutter="8px">
+        {images.map((image) => {
+          if (likedImages.includes(image.id))
+            return <Image key={image.id} image={image} />;
+        })}
+      </Masonry>
+    </ResponsiveMasonry>
+  ) : (
+    <p className="text-center text-lg italic">No images found !</p>
   );
 }
 
