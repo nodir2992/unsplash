@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 //  CUSTOM HOOKS
 import { useFetch } from "../../hooks/useFetch";
+//  COMPONENTS
+import { Image } from "../../components";
 
 function ImageInfo() {
   const [photo, setPhoto] = useState(null);
@@ -19,24 +21,26 @@ function ImageInfo() {
     if (data) setPhoto(data);
   }, [data]);
 
-  return (
-    photo && (
-      <div className="card bg-base-100 shadow-xl md:card-side lg:mx-auto lg:w-2/3">
-        <figure className="md:w-2/3">
-          <img src={photo.urls.regular} alt={photo.alt_description} />
-        </figure>
-        <div className="card-body">
-          <p>
-            <span className="font-semibold">City :</span> {photo.location.city}
-            <br />
-            <span className="font-semibold">Country :</span>{" "}
-            {photo.location.country}
-            <br />
-            <span className="font-semibold">Name :</span> {photo.location.name}
-          </p>
-        </div>
+  if (error) return <p className="text-center text-red-600">{error}</p>;
+
+  return !isPending && photo ? (
+    <div className="card bg-base-100 shadow-xl md:card-side lg:mx-auto lg:w-2/3">
+      <figure className="md:w-2/3">
+        <Image image={photo} imgLink={false} />
+      </figure>
+      <div className="card-body">
+        <p>
+          <span className="font-semibold">City :</span> {photo.location.city}
+          <br />
+          <span className="font-semibold">Country :</span>{" "}
+          {photo.location.country}
+          <br />
+          <span className="font-semibold">Name :</span> {photo.location.name}
+        </p>
       </div>
-    )
+    </div>
+  ) : (
+    "Loading..."
   );
 }
 

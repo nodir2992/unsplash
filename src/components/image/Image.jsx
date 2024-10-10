@@ -6,7 +6,18 @@ import { useGlobalContext } from "../../hooks/useGlobalContext";
 //  RRD
 import { Link } from "react-router-dom";
 
-function Image({ image, downloadBtn = true }) {
+const RenderImg = ({ src, alt }) => {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className="rounded-md transition-all duration-200 group-hover:opacity-90"
+      style={{ width: "100%", display: "block" }}
+    />
+  );
+};
+
+function Image({ image, downloadBtn = true, imgLink = true }) {
   const { dispatch, likedImages, downloadedImages } = useGlobalContext();
   const { id, urls, alt_description, links, user } = image;
   const liked = likedImages.includes(id);
@@ -29,18 +40,15 @@ function Image({ image, downloadBtn = true }) {
     dispatch({ type: "TOGGLE_DOWNLOADED_IMAGE", payload: images });
   };
 
-  // console.log(user);
-
   return (
     <div className="group relative">
-      <Link to={`/photo-info/${id}`}>
-        <img
-          src={urls.regular}
-          alt={alt_description}
-          className="rounded-md transition-all duration-200 group-hover:opacity-90"
-          style={{ width: "100%", display: "block" }}
-        />
-      </Link>
+      {imgLink ? (
+        <Link to={`/photo-info/${id}`}>
+          <RenderImg src={urls.regular} alt={alt_description} />
+        </Link>
+      ) : (
+        <RenderImg src={urls.regular} alt={alt_description} />
+      )}
       <span
         onClick={() => handleLike(id)}
         className="__image-item right-3 top-3"
