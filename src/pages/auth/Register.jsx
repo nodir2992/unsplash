@@ -2,7 +2,9 @@
 import { Form, Link, useActionData } from "react-router-dom";
 //  CUSTOM HOOKS
 import { useRegister } from "../../hooks/useRegister";
-import toast from "react-hot-toast";
+//  TOAST
+import { toast } from "react-toastify";
+//  REACT
 import { useEffect } from "react";
 
 //  ACTION

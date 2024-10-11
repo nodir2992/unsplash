@@ -2,7 +2,7 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 //  TOAST
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 
 export function useLogin() {
   const loginWithEmail = (email, password) => {

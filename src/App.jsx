@@ -38,7 +38,11 @@ export default function App() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      dispatch({ type: "SET_USER", payload: user });
+      if (user) {
+        dispatch({ type: "SET_USER", payload: user });
+      } else {
+        dispatch({ type: "LOGOUT" });
+      }
       setAuthReady(true);
     });
   }, []);

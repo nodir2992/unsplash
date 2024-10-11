@@ -11,7 +11,8 @@ import { useGlobalContext } from "../../hooks/useGlobalContext";
 // FIREBASE
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
-import toast from "react-hot-toast";
+//  TOAST
+import { toast } from "react-toastify";
 
 function Navbar() {
   const { likedImages, downloadedImages, user } = useGlobalContext();
@@ -19,7 +20,7 @@ function Navbar() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      toast.success("Signout...");
+      toast.warn("Signout...");
     } catch (error) {
       toast.error(error.message);
     }

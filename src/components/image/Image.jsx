@@ -5,6 +5,13 @@ import { MdOutlineDownloadForOffline } from "react-icons/md";
 import { useGlobalContext } from "../../hooks/useGlobalContext";
 //  RRD
 import { Link } from "react-router-dom";
+// CUSTOM HOOKS
+import { useFirestore } from "../../hooks/useFirestore";
+//  CONSTANT
+import {
+  COLLECTION_DOWNLOADED_IMAGES,
+  COLLECTION_LIKED_IMAGES,
+} from "../../constant/collectionName";
 
 const RenderImg = ({ src, alt }) => {
   return (
@@ -18,26 +25,38 @@ const RenderImg = ({ src, alt }) => {
 };
 
 function Image({ image, downloadBtn = true, imgLink = true }) {
-  const { dispatch, likedImages, downloadedImages } = useGlobalContext();
+  const { addDocument, deleteDocument } = useFirestore();
+  const {
+    likedImages,
+    downloadedImages,
+    user: currentUser,
+  } = useGlobalContext();
   const { id, urls, alt_description, links, user } = image;
   const liked = likedImages.some((item) => item.id == id);
   const downloded = downloadedImages.some((item) => item.id == id);
 
   const handleLike = (id) => {
-    const images = liked
-      ? likedImages.filter((item) => item.id != id)
-      : [...likedImages, image];
-
-    dispatch({ type: "TOGGLE_LIKED_IMAGE", payload: images });
+    if (!liked) {
+      addDocument(COLLECTION_LIKED_IMAGES, id, {
+        currentUserId: currentUser.uid,
+        ...image,
+      });
+    } else {
+      deleteDocument(COLLECTION_LIKED_IMAGES, id);
+    }
   };
 
-  const handleDownload = () => {
-    const images = downloded ? downloadedImages : [...downloadedImages, image];
-    dispatch({ type: "TOGGLE_DOWNLOADED_IMAGE", payload: images });
+  const handleDownload = (id) => {
+    if (!downloded) {
+      addDocument(COLLECTION_DOWNLOADED_IMAGES, id, {
+        currentUserId: currentUser.uid,
+        ...image,
+      });
+    }
   };
+
   const handleRemoveDownload = (id) => {
-    const images = downloadedImages.filter((item) => item.id != id);
-    dispatch({ type: "TOGGLE_DOWNLOADED_IMAGE", payload: images });
+    deleteDocument(COLLECTION_DOWNLOADED_IMAGES, id);
   };
 
   return (

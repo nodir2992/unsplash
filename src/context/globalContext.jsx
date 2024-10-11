@@ -1,5 +1,12 @@
 //  REACT
 import { createContext, useEffect, useReducer } from "react";
+//  CUSTOM HOOKS
+import { useCollection } from "../hooks/useCollection";
+//  CONSTANT
+import {
+  COLLECTION_DOWNLOADED_IMAGES,
+  COLLECTION_LIKED_IMAGES,
+} from "../constant/collectionName";
 
 const initialState = {
   likedImages: [],
@@ -12,28 +19,45 @@ export const GlobalContext = createContext(undefined);
 const changeState = (state, action) => {
   const { type, payload } = action;
   switch (type) {
-    case "TOGGLE_LIKED_IMAGE":
+    case "SET_LIKED_IMAGES":
       return { ...state, likedImages: payload };
-    case "TOGGLE_DOWNLOADED_IMAGE":
+    case "SET_DOWNLOADED_IMAGE":
       return { ...state, downloadedImages: payload };
     case "SET_USER":
       return { ...state, user: payload };
+    case "LOGOUT":
+      return initialState;
     default:
       return state;
   }
 };
 
-const getInitialState = () => {
-  const data = localStorage.getItem("global");
-  return data ? JSON.parse(data) : initialState;
-};
-
 export function GlobalContextProvider({ children }) {
-  const [state, dispatch] = useReducer(changeState, getInitialState());
+  const [state, dispatch] = useReducer(changeState, initialState);
+  const { data: likedImages } = useCollection(COLLECTION_LIKED_IMAGES);
+  const { data: downloadedImages } = useCollection(
+    COLLECTION_DOWNLOADED_IMAGES,
+  );
 
   useEffect(() => {
-    // localStorage.setItem("global", JSON.stringify(state));
-  }, [state]);
+    if (likedImages && state.user) {
+      const data = likedImages.filter(
+        (item) => item.currentUserId == state.user.uid,
+      );
+
+      dispatch({ type: "SET_LIKED_IMAGES", payload: data });
+    }
+  }, [likedImages, state.user]);
+
+  useEffect(() => {
+    if (downloadedImages && state.user) {
+      const data = downloadedImages.filter(
+        (item) => item.currentUserId == state.user.uid,
+      );
+
+      dispatch({ type: "SET_DOWNLOADED_IMAGE", payload: data });
+    }
+  }, [downloadedImages, state.user]);
 
   // console.log(state);
 

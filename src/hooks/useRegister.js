@@ -8,7 +8,7 @@ import {
 //  FIREBASE CONFIG
 import { auth } from "../firebase/firebaseConfig";
 //  TOAST
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 //  CUSTOM HOOKS
 import { useGlobalContext } from "./useGlobalContext";
 
