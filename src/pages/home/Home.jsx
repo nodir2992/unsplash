@@ -1,8 +1,7 @@
 //  REACT
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 //  CUSTOM HOOKS
 import { useFetch } from "../../hooks/useFetch";
-import { useGlobalContext } from "../../hooks/useGlobalContext";
 //  MASONRY
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 //  COMPONENTS
@@ -18,7 +17,9 @@ export const action = async ({ request }) => {
 };
 
 function Home() {
-  const { dispatch, pageNumber, images, searchParams } = useGlobalContext();
+  const [images, setImages] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [searchText, setSearchText] = useState("");
   const searchParamsFromAction = useActionData();
 
   const { data, isPending, error } = useFetch(
@@ -29,28 +30,24 @@ function Home() {
 
   useEffect(() => {
     if (data) {
-      let results = data.results;
-
-      if (images.length > 0) {
-        results = results.filter(
-          (item) => !images.some((img) => img.id === item.id),
-        );
-      }
-
-      if (searchParamsFromAction == searchParams) {
-        dispatch({ type: "ADD_IMAGES", payload: results });
+      if (searchParamsFromAction != searchText) {
+        setSearchText(searchParamsFromAction);
+        setImages(data.results);
       } else {
-        dispatch({ type: "SEARCH_IMAGES", payload: results });
-        dispatch({
-          type: "SET_SEARCH_PARAMS",
-          payload: searchParamsFromAction,
-        });
+        let results = data.results;
+        if (images.length > 0) {
+          results = results.filter(
+            (item) => !images.some((img) => img.id === item.id),
+          );
+        }
+
+        setImages((prev) => [...prev, ...results]);
       }
     }
   }, [data]);
 
   const handleReadMore = () => {
-    dispatch({ type: "SET_PAGE_NUMBER", payload: pageNumber + 1 });
+    setPageNumber(pageNumber + 1);
   };
 
   if (error) return <p className="text-center text-red-600">{error}</p>;

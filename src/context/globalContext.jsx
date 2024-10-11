@@ -2,11 +2,8 @@
 import { createContext, useEffect, useReducer } from "react";
 
 const initialState = {
-  pageNumber: 1,
-  images: [],
   likedImages: [],
   downloadedImages: [],
-  searchParams: "",
   user: null,
 };
 
@@ -15,14 +12,6 @@ export const GlobalContext = createContext(undefined);
 const changeState = (state, action) => {
   const { type, payload } = action;
   switch (type) {
-    case "SET_PAGE_NUMBER":
-      return { ...state, pageNumber: payload };
-    case "SET_SEARCH_PARAMS":
-      return { ...state, searchParams: payload };
-    case "ADD_IMAGES":
-      return { ...state, images: [...state.images, ...payload] };
-    case "SEARCH_IMAGES":
-      return { ...state, images: payload };
     case "TOGGLE_LIKED_IMAGE":
       return { ...state, likedImages: payload };
     case "TOGGLE_DOWNLOADED_IMAGE":
